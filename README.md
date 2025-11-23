@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/assets/logo.png" alt="markdown.ai banner" width="700">
+  <img src="src/assets/logo.png" alt="markdown.ai banner" width="200">
 </p>
 
 <p align="center">
