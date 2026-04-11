@@ -1,7 +1,8 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import { Landing } from './pages/Landing'
+
 import { AiGenerator } from './pages/Ai-Generator'
 import { CreateReadme } from './pages/CreateReadme'
+import { Landing } from './pages/Landing'
 
 function App(){
   return(

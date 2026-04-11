@@ -25,7 +25,7 @@
 
     async function handleSubmit(e : any){
       e.preventDefault()
-      console.log(input);
+      
       setLoading(true);
       try{
         const response = await axios.post(`${API}/app/public/generate-readme`,input);
@@ -33,8 +33,8 @@
         setReadme(temp)
 
         
-        console.log("hi there")
-        console.log(temp);
+   
+     
         setLoading(false);
 
       }catch(err){
@@ -106,11 +106,11 @@
     return(
       <div className="flex h-[calc(100vh-5rem)] mt-5 justify-center">
           <div className=" flex-1 p-4 flex flex-col h-full">
-              <div className="py-2 text-blue-500 font-bold underline-offset-2 underline text-xl">
+              <div className="py-2 text-black font-mono font-bold underline-offset-2 underline text-2xl">
                   Markdown Input :
               </div>
             <textarea
-              className=" border-2 border-gray-400 bg-white w-full h-full resize-none p-4"
+              className=" border-2 border-gray-400 bg-white w-full h-full resize-none p-4  overflow-auto"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
