@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { NewNavbar } from "@/components/Navbar/NewNavbar"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,7 @@ import {
   Download,
   Layers,
 } from "lucide-react"
+import axios from "axios"
 
 const features = [
   {
@@ -71,7 +72,9 @@ const steps = [
 
 export function Landing() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const location = useLocation();
+  const [backendRunning, setBackendRunning] = useState(false)
+  const [backendLoading, setBackendLoading] = useState(true)
 
   useEffect(() => {
     const raw = location.hash.replace(/^#/, "")
@@ -84,6 +87,16 @@ export function Landing() {
       })
     requestAnimationFrame(run)
   }, [location.hash, location.pathname])
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URL}`)
+      .then(() => {
+        setBackendRunning(true)
+      })
+      .finally(() => {
+        setBackendLoading(false)
+      })
+  }, [])
 
   return (
     <div className="min-h-screen bg-neutral-300">
@@ -150,22 +163,56 @@ export function Landing() {
               Paste your GitHub URL and let AI create a clear, personalized README
               you can edit and ship.
             </p>
-            <div className="mt-10 flex flex-col items-center gap-1">
-              <Button
-                size="lg"
-                onClick={() => navigate("/ai")}
-                className="bg-blue-500 px-14 py-7 text-xl font-medium hover:cursor-pointer hover:bg-blue-400"
-              >
-                Get Started
-              </Button>
-              <Button
-                variant="link"
-                onClick={() => navigate("/create")}
-                className="hover:cursor-pointer"
-              >
-                or create one from scratch
-              </Button>
-            </div>
+            {backendLoading ? (
+              <div className="mt-10 flex flex-col items-center gap-3">
+                <svg
+                  className="h-8 w-8 animate-spin text-blue-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12" cy="12" r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
+                </svg>
+                <p className="text-sm text-gray-500">
+                  First load may take up to 30 seconds while the server spins up — hang tight!
+                </p>
+              </div>
+            ) : backendRunning ? (
+              <div className="mt-10 flex flex-col items-center gap-1">
+                <Button
+                  size="lg"
+                  onClick={() => navigate("/ai")}
+                  className="bg-blue-500 px-14 py-7 text-xl font-medium hover:cursor-pointer hover:bg-blue-400"
+                >
+                  Get Started
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={() => navigate("/create")}
+                  className="hover:cursor-pointer"
+                >
+                  or create one from scratch
+                </Button>
+              </div>
+            ) : (
+              <p className="mt-10 text-sm text-red-500">
+                Could not reach the server. Please try refreshing.
+              </p>
+            )}
+
+
+            
           </div>
 
           <div className="relative z-10 mx-auto mt-14 flex max-w-3xl justify-center px-2 sm:px-0">

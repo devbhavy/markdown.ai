@@ -1,4 +1,3 @@
-  //Ai-generator
 
   import { AiPageNavbar } from "@/components/Navbar/AipageNavbar";
   import { Button } from "@/components/ui/button";
